@@ -27,3 +27,16 @@ This folder contains python scripts used to convert the txt files from the asset
 The folder conains the C source for the game as well as the generated bin asset files and compiled lode_runner.prg file.
 
 
+## Workflow
+
+After every code change, commit with a clean, descriptive commit message and push to GitHub so there is always a saved version to revert to if needed.
+
+## General Guidance
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+
+Think before coding:
+- If multiple interpretations exist, present them - don't pick silently.
+- If something is unclear, stop. Name what's confusing. Ask.

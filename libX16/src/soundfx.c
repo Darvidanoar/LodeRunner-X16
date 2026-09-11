@@ -2,6 +2,18 @@
 #include "soundfx.h"
 #include <conio.h>
 
+
+void waitYMReady(void) {
+    // Check the busy register (bit 7 of the data register)
+    volatile unsigned char *YM_Data = (volatile unsigned char *)0x9F41;
+    unsigned char value = *YM_Data;
+
+    while (value & 0b10000000) {
+        value = *YM_Data;
+        waitvsync();
+    }
+}
+
 // Start or continue playing the specified sound effect when
 // called from the main loop
 int playFx(struct soundFx_t *fx)
@@ -41,10 +53,9 @@ void playFxSync(struct soundFx_t *fx)
 
 int stopFx(struct soundFx_t *fx) {
     int8_t i = 0;
-    int8_t cm = 0;
     for (i = 0; i < 8; i++) {
         // If this effect uses this channel then send KEY OFF event
-        if (fx->channelMask & (1 << cm)) {
+        if (fx->channelMask & (1 << i)) {
             waitYMReady();
             YMREG(YM_KEY_ON,i);
         }
@@ -56,13 +67,3 @@ int stopFx(struct soundFx_t *fx) {
 }
 
 
-void waitYMReady(void) {
-    // Check the busy register (bit 7 of the data register)
-    volatile unsigned char *YM_Data = (volatile unsigned char *)0x9F41;
-    unsigned char value = *YM_Data;
-
-    while (value & 0b10000000) {
-        value = *YM_Data;
-        waitvsync();
-    }
-}

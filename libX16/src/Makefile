@@ -1,8 +1,8 @@
 .PHONY: all clean
 
-LIBRARIES := ..\lib
+LIBRARIES := ../lib
 
-INCLUDE := ..\include
+INCLUDE := ../include
 
 FILES := \
 	vload.c load.c save.c soundfx.c
@@ -18,7 +18,7 @@ OPT := -Oi
 
 libX16.lib: $(OBJ)
 	ar65 r libX16.lib $(OBJ)
-	copy *.lib $(LIBRARIES)
+	cp *.lib $(LIBRARIES)
 
 clean:
-	del /q $(LIBRARIES)/*.lib *.o *.s *.lib
+	rm -f $(LIBRARIES)/*.lib *.o *.s *.lib
