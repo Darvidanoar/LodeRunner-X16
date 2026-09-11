@@ -1,0 +1,1 @@
+F:\CommanderX16\X16Emulator\x16emu -scale 2 -prg lode_runner.prg
