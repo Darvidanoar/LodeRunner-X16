@@ -4,8 +4,8 @@ Picking up where Chris Love (https://github.com/CJLove/) left off on this Comman
 
 ## Goals
 
-- Address a few issues with the sound
-- Address some issues with the game losing track of the gold count and levels being unpalyable
+- Address a few issues with the sound - DONE
+- Address some issues with the game losing track of the gold count and levels being unpalyable - DONE
 - scale the playfield up to utilise more screen area 
 
 
