@@ -106,6 +106,7 @@ uint8_t initGuard(uint8_t x, uint8_t y)
         guard[i].direction = ACT_RIGHT;
         guard[i].idx = 0;
         guard[i].animSpeed=ANIM_SPEED;
+        guard[i].hasGold = 0;
 
         guard[i].sequence = RUN_SEQUENCE;
 
