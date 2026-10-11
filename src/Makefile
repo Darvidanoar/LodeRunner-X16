@@ -22,7 +22,7 @@ SPLASH.BIN: ../assets/splash.txt
 	python ../scripts/ascii2bin.py --input ../assets/splash.txt --output SPLASH.BIN --addr a000
 
 TILES.BIN: ../assets/tiles.txt
-	python ../scripts/graphic.py --input ../assets/tiles.txt --output TILES.BIN --x 8 --y 8 --bpp 2 --addr 0000
+	python ../scripts/graphic.py --input ../assets/tiles.txt --output TILES.BIN --x 16 --y 16 --bpp 2 --addr 0000
 
 CLASSIC.BIN: ../assets/classic.json ../scripts/levels.py
 	python ../scripts/levels.py --input ../assets/classic.json --output CLASSIC.BIN
@@ -43,7 +43,7 @@ CUSTOM.BIN: ../assets/custom.json ../scripts/levels.py
 	python ../scripts/levels.py --input ../assets/custom.json --output CUSTOM.BIN
 
 SPRITES.BIN: ../assets/sprites.txt ../scripts/graphic.py
-	python ../scripts/graphic.py --input ../assets/sprites.txt --output SPRITES.BIN --x 8 --y 8 --bpp 4 --addr e000
+	python ../scripts/graphic.py --input ../assets/sprites.txt --output SPRITES.BIN --x 16 --y 16 --bpp 4 --addr 3000
 
 clean:
 	rm -f *.prg *.o
@@ -56,5 +56,10 @@ artifacts: all
 	rm -f ../lode_runner.zip
 	zip ../lode_runner.zip lode_runner.prg *.BIN
 
-run:
-	x16emu -scale 2 -prg lode_runner.prg -run
+# Depends on `all` so the .BIN files and .prg always exist and are current.
+# -fsroot pins x16emu's HostFS to this directory explicitly: x16emu resolves
+# the bare filenames in loader.c (tiles.bin, sprites.bin, etc.) against its
+# own working directory at launch, not against wherever lode_runner.prg came
+# from, so without this `make run` only works by accident of Make's CWD.
+run: all
+	x16emu -scale 2 -fsroot $(CURDIR) -prg $(CURDIR)/lode_runner.prg -run

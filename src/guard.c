@@ -29,6 +29,10 @@ void addGuardToShakeQueue(uint8_t id);
 #define MAX_SEQ_LENGTH 3
 #define ANIM_SPEED 2
 
+
+//#define DEBUG
+
+
 static uint8_t guardSequences[MAX_SEQUENCE][MAX_SEQ_LENGTH] = {
     // RUN_SEQUENCE
     {IMAGE_ADDR(GUARD_1), IMAGE_ADDR(GUARD_2), IMAGE_ADDR(GUARD_3)},
@@ -62,11 +66,22 @@ void displayGuard(uint8_t id)
 
     sprintf(buffer, "%c:%c:%2u %2d %2d", id + 48, 24, curGuard->x, curGuard->xOffset, curGuard->action);
     for (i = 0; i < 15; i++) {
-        setTile(28 + i, 10 + (id * 2), buffer[i], 0);
+        setTile(1 + i, 1 + (id * 2), buffer[i], 0);
     }
     sprintf(buffer, "%c:%c:%2u %2d", id + 48, 25, curGuard->y, curGuard->yOffset);
     for (i = 0; i < 12; i++) {
-        setTile(30 + i, 11 + (id * 2), buffer[i], 0);
+        setTile(1 + i, 2 + (id * 2), buffer[i], 0);
+    }
+}
+
+void displayGuardGold (uint8_t id) {
+    struct guard_t *curGuard = &guard[id];
+    char buffer[4];
+    uint8_t i = 0;
+
+    sprintf(buffer, "%c:%2d", id + 48, curGuard->hasGold);
+        for (i = 0; i < 4; i++) {
+        setTile(1 + i, 1 + (id), buffer[i], 0);
     }
 }
 
@@ -118,9 +133,9 @@ uint8_t initGuard(uint8_t x, uint8_t y)
         VERA.data0 = SPRITE_Y_L(yPos);                             // Attr4
         VERA.data0 = SPRITE_Y_H(yPos);                             // Attr5
         VERA.data0 = SPRITE_LAYER1;                                // Attr6
-        VERA.data0 = 0;                                            // Attr7
+        VERA.data0 = SPRITE_WIDTH_16 | SPRITE_HEIGHT_16;           // Attr7
 #ifdef DEBUG
-        // displayGuard(guardCount);
+         //displayGuard(guardCount);
 #endif
         guardCount++;
         return 1;
@@ -203,18 +218,15 @@ uint8_t dropGold(uint8_t id)
     if (curGuard->hasGold > 1) {
         // Decrease count but don't drop gold
         curGuard->hasGold--;
-    }
-    else if (curGuard->hasGold == 1) {
+    } else if (curGuard->hasGold == 1) {
         uint8_t x = curGuard->x;
         uint8_t y = curGuard->y;
-        if (map[x][y].base == TILE_BLANK && (y >= MAX_TILE_Y || (nextToken = map[x][y + 1].base) == TILE_BRICK ||
-                                             nextToken == TILE_BLOCK || nextToken == TILE_LADDER)) {
+        if (map[x][y].base == TILE_BLANK && (y >= MAX_TILE_Y || (nextToken = map[x][y + 1].base) == TILE_BRICK || nextToken == TILE_BLOCK || nextToken == TILE_LADDER)) {
             addGold(x, y);
             curGuard->hasGold = -1;
             drop = 1;
-        }
-    }
-    else if (curGuard->hasGold < 0) {
+        } 
+    } else if (curGuard->hasGold < 0) {
         curGuard->hasGold++;
     }
     return drop;
@@ -443,8 +455,7 @@ uint8_t bestMove(uint8_t id)
         if (y == guarder->holePosY) {
             // Climb out of hole
             return ACT_UP;
-        }
-        else {
+        } else {
             checkSameLevelOnly = 1;
             if (x != guarder->holePosX) {
                 // out of hole
@@ -458,21 +469,17 @@ uint8_t bestMove(uint8_t id)
         // skip remaining logic
         if (curToken == TILE_LADDER || (curToken == TILE_ROPE && yOffset == 0)) {
             // No guard fall
-        }
-        else if (yOffset < 0) {
+        } else if (yOffset < 0) {
             return ACT_FALL;
-        }
-        else if (y < MAX_TILE_Y) {
+        } else if (y < MAX_TILE_Y) {
             nextBelow = map[x][y + 1].act;
 
             if ((nextBelow == TILE_BLANK || nextBelow == TILE_RUNNER)) {
                 return ACT_FALL;
-            }
-            else if (nextBelow == TILE_BRICK || nextBelow == TILE_BLOCK || nextBelow == TILE_GUARD ||
+            } else if (nextBelow == TILE_BRICK || nextBelow == TILE_BLOCK || nextBelow == TILE_GUARD ||
                      nextBelow == TILE_LADDER) {
                 // No guard fall
-            }
-            else {
+            } else {
                 return ACT_FALL;
             }
         }
@@ -484,8 +491,7 @@ uint8_t bestMove(uint8_t id)
         while (x != runner.x) {
             if (y < MAX_TILE_Y) {
                 nextBelow = map[x][y + 1].base;
-            }
-            else {
+            } else {
                 nextBelow = TILE_BLOCK;
             }
             curToken = map[x][y].base;
@@ -496,13 +502,11 @@ uint8_t bestMove(uint8_t id)
                 if (x < runner.x) {
                     // Guard to left of runner
                     ++x;
-                }
-                else if (x > runner.x) {
+                } else if (x > runner.x) {
                     // Guard to right of runner
                     --x;
                 }
-            }
-            else {
+            } else {
                 // Exit loop with closest x if no path to runner
                 break;
             }
@@ -512,16 +516,13 @@ uint8_t bestMove(uint8_t id)
             // scan for a path ignoring walls is a success
             if (guarder->x < runner.x) {
                 nextMove = ACT_RIGHT;
-            }
-            else if (guarder->x > runner.x) {
+            } else if (guarder->x > runner.x) {
                 nextMove = ACT_LEFT;
-            }
-            else {
+            } else {
                 // Guard x == runner x
                 if (guarder->xOffset < runner.xOffset) {
                     nextMove = ACT_RIGHT;
-                }
-                else {
+                } else {
                     nextMove = ACT_LEFT;
                 }
             }
@@ -694,8 +695,7 @@ void guardMoveStep(uint8_t id, uint8_t action)
                     if (map[x][y - 1].base == TILE_BLANK) {
                         // Drop gold above
                         addGold(x, y - 1);
-                    }
-                    else {
+                    } else {
                         decGold();  // Gold disappears
                     }
                     curGuard->hasGold = 0;
@@ -805,8 +805,7 @@ void guardMoveStep(uint8_t id, uint8_t action)
         if (curGuard->action != ACT_CLIMB_OUT) {
             curGuard->action = ACT_STOP;
         }
-    }
-    else {
+    } else {
         uint16_t xPos = (x + X_OFFSET) * TILE_W + xOffset;
         uint16_t yPos = (y + Y_OFFSET) * TILE_H + yOffset;
         uint8_t dir = (curGuard->direction == ACT_LEFT) ? 1 : 0;
@@ -843,7 +842,7 @@ void guardMoveStep(uint8_t id, uint8_t action)
         ((!xOffset && yOffset >= 0 && yOffset < H4) || (!yOffset && xOffset >= 0 && xOffset < W4) ||
          (y < MAX_TILE_Y && map[x][y + 1].base == TILE_LADDER && yOffset < H4)  // gold above ladder
          )) {
-        curGuard->hasGold = rand() % 37;
+            curGuard->hasGold = rand() % 37;
         removeGold(x, y);
     }
 }
@@ -853,6 +852,7 @@ void moveGuard()
     uint8_t moves = 0;
     struct guard_t *curGuard = 0;
     uint8_t x = 0, y = 0, yOffset = 0;
+    uint8_t j = 0;
 
     if (!guardCount)
         return;  // No guard
@@ -874,7 +874,7 @@ void moveGuard()
 
         // Debug: display guard position
 #ifdef DEBUG
-        // displayGuard(moveId);
+        displayGuardGold(moveId);
 #endif
     }
 }
@@ -927,10 +927,10 @@ void processGuardShake()
                 // Shake the guard by shifting its X position
                 uint16_t xPos = (curGuard->x + X_OFFSET) * TILE_W;
                 if (shake[i].idx % 2) {
-                    xPos -= 2;
+                    xPos -= 4;
                 }
                 else {
-                    xPos += 2;
+                    xPos += 4;
                 }
                 vpoke(xPos & 0xff, SPRITE_ATTR2 + 8 * (shake[i].id + 1));
                 vpoke(xPos >> 8, SPRITE_ATTR3 + 8 * (shake[i].id + 1));
