@@ -22,12 +22,12 @@ void addGuardToShakeQueue(uint8_t id);
 #define MAX_SEQUENCE 4
 
 // Animation sequence lengths
-#define RUN_LENGTH 3
+#define RUN_LENGTH 4
 #define RAPPEL_LENGTH 3
 #define CLIMB_LENGTH 2
 #define FALL_LENGTH 1
-#define MAX_SEQ_LENGTH 3
-#define ANIM_SPEED 2
+#define MAX_SEQ_LENGTH 4
+#define ANIM_SPEED 1
 
 
 //#define DEBUG
@@ -35,7 +35,7 @@ void addGuardToShakeQueue(uint8_t id);
 
 static uint8_t guardSequences[MAX_SEQUENCE][MAX_SEQ_LENGTH] = {
     // RUN_SEQUENCE
-    {IMAGE_ADDR(GUARD_1), IMAGE_ADDR(GUARD_2), IMAGE_ADDR(GUARD_3)},
+    {IMAGE_ADDR(GUARD_1), IMAGE_ADDR(GUARD_2), IMAGE_ADDR(GUARD_3), IMAGE_ADDR(GUARD_4)},
     // CLIMB_SEQUENCE
     {IMAGE_ADDR(GUARD_CLIMB_1), IMAGE_ADDR(GUARD_CLIMB_2)},
     // RAPPEL_SEQUENCE
