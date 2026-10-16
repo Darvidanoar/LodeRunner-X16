@@ -32,7 +32,7 @@ struct guard_t {
     // Animation speed [DA]
     uint8_t animSpeed;
     
-    // Guard has gold
+    // Guard has gold (counts down to when the guard will drop the gold)
     int8_t hasGold;
 };
 

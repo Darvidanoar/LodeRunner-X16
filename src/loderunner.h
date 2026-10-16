@@ -57,27 +57,27 @@
 #define LEVEL_OFFSET 224
 
 // Sprite images
-#define RUNNER_1        0x1e000
-#define RUNNER_2        0x1e020
-#define RUNNER_3        0x1e040
-#define RUNNER_4        0x1e060
-#define RUNNER_5        0x1e080
-#define RUNNER_6        0x1e0a0
-#define RUNNER_CLIMB_1  0x1e0c0 //0x1e060
-#define RUNNER_CLIMB_2  0x1e0e0 //0x1e080
-#define RUNNER_FALLING  0x1e100 //0x1e0a0
-#define RUNNER_RAPPEL_1 0x1e120 //0x1e0c0
-#define RUNNER_RAPPEL_2 0x1e140 //0x1e0e0
-#define RUNNER_RAPPEL_3 0x1e160 //0x1e100
-#define GUARD_1         0x1e180 //0x1e120
-#define GUARD_2         0x1e1a0 //0x1e140
-#define GUARD_3         0x1e1c0 //0x1e160
-#define GUARD_CLIMB_1   0x1e1e0 //0x1e180
-#define GUARD_CLIMB_2   0x1e200 //0x1e1a0
-#define GUARD_FALLING   0x1e220 //0x1e1c0
-#define GUARD_RAPPEL_1  0x1e240 //0x1e1e0
-#define GUARD_RAPPEL_2  0x1e260 //0x1e200
-#define GUARD_RAPPEL_3  0x1e280 //0x1e220
+// Each frame is 16x16 pixels @ 4bpp = 128 (0x80) bytes
+#define RUNNER_1        0x13000
+#define RUNNER_2        0x13080
+#define RUNNER_3        0x13100
+#define RUNNER_4        0x13180     
+#define RUNNER_CLIMB_1  0x13200
+#define RUNNER_CLIMB_2  0x13280
+#define RUNNER_FALLING  0x13300
+#define RUNNER_RAPPEL_1 0x13380
+#define RUNNER_RAPPEL_2 0x13400
+#define RUNNER_RAPPEL_3 0x13480
+#define GUARD_1         0x13500
+#define GUARD_2         0x13580
+#define GUARD_3         0x13600
+#define GUARD_4         0x13680
+#define GUARD_CLIMB_1   0x13700
+#define GUARD_CLIMB_2   0x13780
+#define GUARD_FALLING   0x13800
+#define GUARD_RAPPEL_1  0x13880
+#define GUARD_RAPPEL_2  0x13900
+#define GUARD_RAPPEL_3  0x13980
 
 #define MAX_GUARDS 6
 

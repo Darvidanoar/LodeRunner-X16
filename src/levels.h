@@ -30,16 +30,16 @@
 #define Y_OFFSET    6
 
 // Tile dimensions
-#define TILE_H  8
-#define TILE_W  8
+#define TILE_H  16
+#define TILE_W  16
 
 // Half tile dimensions
-#define W2  4
-#define H2  4
+#define W2  8
+#define H2  8
 
 // Quarter tile dimensions
-#define W4  2
-#define H4  2
+#define W4  4
+#define H4  4
 
 // Struct defining each tile of the map
 struct map_t {
