@@ -19,9 +19,11 @@ int screenConfig()
 
     VERA.layer1.config = MAP_WIDTH_128 | MAP_HEIGHT_64 | LAYER_CONFIG_2BPP;         // 128x64 map, color depth 1
     VERA.layer1.mapbase = MAP_BASE_ADDR(0x0);                                       // Map base at 0x00000
-    VERA.layer1.tilebase = TILE_BASE_ADDR(0x10000) | TILE_WIDTH_8 | TILE_HEIGHT_8;  // Tile base at 0x10000, 8x8 tiles
+    VERA.layer1.tilebase = TILE_BASE_ADDR(0x10000) | TILE_WIDTH_16 | TILE_HEIGHT_16;  // Tile base at 0x10000, 16x16 tiles
 
-    videomode(VIDEOMODE_40x30);
+    // 80x60 text-mode grid gives a 640x480 active display area, matching
+    // the 40x30 tile grid now that tiles are 16x16 instead of 8x8
+    videomode(VIDEOMODE_80x60);
 
     // Clear the full tilemap
     for (x = 0; x < 128; x++) {
@@ -55,15 +57,15 @@ uint8_t getTile(uint8_t x, uint8_t y) { return vpeek(y * OFFSET + x * 2); }
 uint8_t getTileXY(uint16_t x, uint16_t y)
 {
     // Convert pixel position to tile position
-    x = x / 8;
-    y = y / 8;
+    x = x / 16;
+    y = y / 16;
     return vpeek(y * OFFSET + x * 2);
 }
 
 uint8_t getTileBelowXY(uint16_t x, uint16_t y)
 {
-    x = x / 8;
-    y = y / 8;
+    x = x / 16;
+    y = y / 16;
     y++;
     return vpeek(y * OFFSET + x * 2);
 }

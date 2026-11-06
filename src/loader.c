@@ -50,7 +50,7 @@ int loadFiles()
     }
 
     // Load sprites
-    result = vload_host("sprites.bin",0x1e000);
+    result = vload_host("sprites.bin",0x13000);
     if (result)
         printf("  loaded sprites\n");
     else {

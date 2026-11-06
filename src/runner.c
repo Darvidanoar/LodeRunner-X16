@@ -22,16 +22,16 @@
 #define MAX_SEQUENCE 4
 
 // Animation sequence lengths
-#define RUN_LENGTH 6
+#define RUN_LENGTH 4
 #define RAPPEL_LENGTH 3
 #define CLIMB_LENGTH 2
 #define FALL_LENGTH 1
-#define MAX_SEQ_LENGTH 6
-#define ANIM_SPEED 4
+#define MAX_SEQ_LENGTH 4
+#define ANIM_SPEED 3
 
 static uint8_t runnerSequences[MAX_SEQUENCE][MAX_SEQ_LENGTH] = {
     // RUN_SEQUENCE
-    {IMAGE_ADDR(RUNNER_1), IMAGE_ADDR(RUNNER_2), IMAGE_ADDR(RUNNER_3), IMAGE_ADDR(RUNNER_4), IMAGE_ADDR(RUNNER_5), IMAGE_ADDR(RUNNER_6)},
+    {IMAGE_ADDR(RUNNER_1), IMAGE_ADDR(RUNNER_2), IMAGE_ADDR(RUNNER_3), IMAGE_ADDR(RUNNER_4)},
     // CLIMB_SEQUENCE
     {IMAGE_ADDR(RUNNER_CLIMB_1), IMAGE_ADDR(RUNNER_CLIMB_2)},
     // RAPPEL_SEQUENCE
@@ -67,7 +67,7 @@ static uint8_t digRight[2][DIG_LENGTH] = {
 #define STATE_FALLING 2
 
 // Define this to enable runner debug information
-// #define DEBUG
+//#define DEBUG
 // Define this to debug hole fill (NOTE: slows down the game)
 //#define DEBUG_FILL
 
@@ -182,7 +182,7 @@ void displayGold()
     char buffer[5];
     sprintf(buffer, "%02d %d", currentLevel.goldCount, currentLevel.goldComplete);
     for (i = 0; i < 4; i++) {
-        setTile(36 + i, 20, buffer[i], 0);
+        setTile(10 + i, 20, buffer[i], 0);
     }
 }
 #endif
@@ -278,7 +278,7 @@ void initRunner(uint8_t x, uint8_t y)
     VERA.data0 = SPRITE_Y_L(yPos);                 // Attr4
     VERA.data0 = SPRITE_Y_H(yPos);                 // Attr5
     VERA.data0 = SPRITE_LAYER1;                    // Attr6
-    VERA.data0 = 0;                                // Attr7
+    VERA.data0 = SPRITE_WIDTH_16 | SPRITE_HEIGHT_16;  // Attr7
 
     vera_sprites_enable(1);
 
