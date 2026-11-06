@@ -6,7 +6,7 @@ Picking up where Chris Love (https://github.com/CJLove/) left off on this Comman
 
 - Address a few issues with the sound - DONE
 - Address some issues with the game losing track of the gold count and levels being unpalyable - DONE
-- scale the playfield up to utilise more screen area 
+- Update the sprites to 16x16 - DONE 
 
 
 ## Game Play
